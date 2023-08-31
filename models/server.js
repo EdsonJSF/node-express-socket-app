@@ -6,6 +6,8 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.server = require("http").createServer(this.app);
+    this.io = require("socket.io")(this.server);
 
     // Middlewares
     this.middlewares();
@@ -15,6 +17,9 @@ class Server {
 
     // Routes
     this.routes();
+
+    // Sockets
+    this.sockets();
   }
 
   middlewares() {
@@ -27,8 +32,18 @@ class Server {
 
   routes() {}
 
+  sockets() {
+    this.io.on("connection", (socket) => {
+      console.log("Client connected");
+
+      socket.on("disconnect", () => {
+        console.log("Client disconnected");
+      });
+    });
+  }
+
   listen() {
-    this.app.listen(this.port, () => {
+    this.server.listen(this.port, () => {
       console.log(`App listening at:`);
       console.log(`http://localhost:${this.port}`);
     });
