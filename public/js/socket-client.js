@@ -6,17 +6,17 @@ const btnSend = document.querySelector("#btnSend");
 const socketClient = io();
 
 socketClient.on("connect", () => {
-  console.log("front connect");
-
   lblOnline.classList.remove("d-none");
   lblOffline.classList.add("d-none");
 });
 
 socketClient.on("disconnect", () => {
-  console.log("front disconnect");
-
   lblOnline.classList.add("d-none");
   lblOffline.classList.remove("d-none");
+});
+
+socketClient.on("send-msg", (payload) => {
+  console.log(payload);
 });
 
 btnSend.addEventListener("click", () => {
@@ -25,6 +25,6 @@ btnSend.addEventListener("click", () => {
     msg,
     id: "123abc",
     date: "32132135165",
-  }
+  };
   socketClient.emit("send-msg", payload);
 });
