@@ -26,5 +26,7 @@ btnSend.addEventListener("click", () => {
     id: "123abc",
     date: "32132135165",
   };
-  socketClient.emit("send-msg", payload);
+  socketClient.emit("send-msg", payload, (id) => {
+    console.log("From server", id);
+  });
 });
